@@ -33,6 +33,7 @@ enum State {
         /// remaining buffer for next entry
         remain: Buffer,
     },
+    UnexpectedEOF,
     #[default]
     Transition,
 }
@@ -111,6 +112,7 @@ where
                 // wait for them to call finish
                 *this.state = State::Finished { remain };
             }
+            State::UnexpectedEOF => {}
             State::Transition => unreachable!(),
         }
         Ok(()).into()
@@ -173,6 +175,7 @@ where
                     }
                 }
             }
+            State::UnexpectedEOF => Err(Error::UnexpectedEOF),
             State::Transition => unreachable!(),
         }
     }
