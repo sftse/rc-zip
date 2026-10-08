@@ -136,12 +136,14 @@ fn stream_truncated_file() {
     let mut v = Vec::new();
     entry.read_to_end(&mut v).unwrap();
     assert_eq!(v, b"This is a test text file.\n");
+    entry.read_to_end(&mut v).unwrap();
 
     entry = entry.finish().unwrap().unwrap();
 
     let mut v = Vec::new();
     entry.read_to_end(&mut v).unwrap();
     assert_eq!(v, b"\x89PNG");
+    entry.read_to_end(&mut v).unwrap();
 
     assert!(matches!(
         entry.finish().map(|_| ()).unwrap_err(),
